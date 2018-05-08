@@ -1,5 +1,6 @@
 import {createStore, applyMiddleware} from 'redux';
 import {create247LoggerObject, getCurrentStateList} from "./redux-helper-utils";
+import {List, Map} from "immutable";
 
 export function createStoreWithLogger(appName, reducer, enhancers ,excludedEvents){
     let enhancerArray = enhancers;
@@ -11,5 +12,10 @@ export function createStoreWithLogger(appName, reducer, enhancers ,excludedEvent
 }
 
 export function getStateList(){
-    return getCurrentStateList();
+    let stateArray = getCurrentStateList();
+    let stateList = new List();
+    stateArray.forEach((state)=>{
+        stateList = stateList.push(Map(JSON.parse(state).nextState))
+    })
+    return stateList;
 }

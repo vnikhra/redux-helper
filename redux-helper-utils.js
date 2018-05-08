@@ -1,7 +1,7 @@
 import {createLogger} from "redux-logger"
 import {List} from "immutable";
 
-let stateList = List();
+let stateList = [];
 
 export function create247LoggerObject(appName, excludedEvents){
     let currentMessage = {};
@@ -15,7 +15,6 @@ export function create247LoggerObject(appName, excludedEvents){
                         currentMessage.action = messageObject;
                     } else if (messageHead.includes("next state")) {
                         currentMessage.nextState = messageObject;
-                        stateList = stateList.push(messageObject);
                     } else if (messageHead.includes("error")) {
                         currentMessage.error = {
                             message: messageObject.message,
@@ -27,6 +26,7 @@ export function create247LoggerObject(appName, excludedEvents){
                 }
                 if(messageHead === "—— log end ——"){
                     console.log(JSON.stringify(currentMessage));
+                    stateList.push(JSON.stringify(currentMessage))
                     currentMessage = {};
                 }
             }
